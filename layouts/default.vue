@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-toolbar
-    color="blue darken-3"
       dark
       app
       fixed
@@ -9,28 +8,23 @@
     >
       <v-toolbar-title style="width: 300px" class="white--text">
       <v-toolbar-side-icon @click.stop='drawer = !drawer'></v-toolbar-side-icon>
-
       <v-btn
         icon
         @click.stop="clipped = !clipped"
       >
         <v-icon>web</v-icon>
       </v-btn>
-
-      <span>Nom-Societe ==></span>
       </v-toolbar-title>
-      <nuxt-link to="/"><v-btn class="orange">Acceuil</v-btn></nuxt-link>
-      <nuxt-link to="/Electricite"><v-btn class="orange">Electricite</v-btn></nuxt-link>
-      <nuxt-link to="/eaux"><v-btn class="orange">Line</v-btn></nuxt-link>
-      <nuxt-link to="/testradar"><v-btn class="orange">Radar</v-btn></nuxt-link>
-      <nuxt-link to="/testbare"><v-btn class="orange">Bare</v-btn></nuxt-link>
-      <nuxt-link to="/testdough"><v-btn class="orange">dough</v-btn></nuxt-link>
-
-
-
+      <v-toolbar-items>
+        <v-btn  light flat color="white" to="/">Acceuil</v-btn>
+        <v-btn  flat color="white" to="/eaux">Statistique</v-btn>
+      </v-toolbar-items>
 
       <v-spacer></v-spacer>
-      <nuxt-link to="/Autre"><v-btn class="orange">ICI</v-btn></nuxt-link>
+      <v-text-field prepend-icon="search" hide-details single-line></v-text-field>
+     <v-btn icon>
+       <v-icon>more_vert</v-icon>
+     </v-btn>
 
       <v-btn icon>
                  <v-icon>search</v-icon>
@@ -54,18 +48,24 @@
     </v-toolbar>
 
     <v-navigation-drawer
+    dark
     :clipped="clipped"
     v-model="drawer"
     fixed
     app
     >
-      <v-list >
+      <v-list>
+        <v-list-tile-avatar size="50">
+            <img src="/akeros-blanc-85x85.jpg">
+        </v-list-tile-avatar>
            <template v-for="item in items">
              <v-layout
                row
                v-if="item.heading"
                align-center
                :key="item.heading"
+               :href="item.href"
+               exact
              >
            </v-layout>
            <v-list-group
@@ -74,8 +74,11 @@
              :key="item.text"
              :prepend-icon="item.model ? item.icon : item['icon-alt']"
              append-icon=""
+             :href="item.href"
+
            >
              <v-list-tile slot="activator">
+
 
                <v-list-tile-content>
                  <v-list-tile-title>
@@ -123,7 +126,7 @@
 </v-container>
 
 </v-content>
-<v-footer fixed="fixed" color="blue darken-3" app>
+<v-footer fixed="fixed" dark class="white--text" app>
     <div>Tous Les droit reserver &copy; {{ new Date().getFullYear() }}</div>
 </v-footer>
 
@@ -137,11 +140,11 @@ export default {
   },
   data () {
     return {
-      clipped: false,
-      drawer: false,
+      clipped: true,
+      drawer: true,
       right: null,
       items: [
-        { icon: 'dashboard', text: 'Tableau de Bord' },
+        { icon: 'dashboard', text: 'Tableau de Bord', href: '/Electricite' },
         { icon: 'history', text: 'Consomation' },
         {
           icon: 'keyboard_arrow_up',
@@ -149,15 +152,34 @@ export default {
           text: 'Type d inergie',
           model: false,
           children: [
-            { icon: 'event', text: 'Electricité' },
+            { icon: 'event', text: 'Electricité', href: '/' },
             { icon: 'home', text: 'Gaz' },
             { icon: 'map', text: 'Eaux' },
-            { icon: 'icon-alt', text: 'Internet' },
+            { icon: 'people', text: 'Internet' },
             { icon: 'business', text: 'Autre' }
           ]
         },
-        { icon: 'settings', text: 'Parrametre' },
-        { icon: 'help', text: 'Help' },
+
+        {
+          icon: 'keyboard_arrow_up',
+          'icon-alt': 'settings',
+          text: 'Parametre',
+          model: false,
+          children: [
+            { icon: 'event', text: 'Theme' },
+            { icon: 'business', text: 'Langue' }
+          ]
+        },
+        {
+          icon: 'keyboard_arrow_up',
+          'icon-alt': 'help',
+          text: 'Help',
+          model: false,
+          children: [
+            { icon: 'event', text: 'Documentation' },
+            { icon: 'business', text: 'Guide User' }
+          ]
+        },
         { icon: 'keyboard', text: 'Nous contacter' }
       ]
     }
